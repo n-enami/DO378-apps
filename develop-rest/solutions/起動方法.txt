@@ -1,0 +1,28 @@
+【起動方法】
+cd "/d/GitRep/SampleProject/Red Hat/@GitRep/DO378-apps/develop-rest/solutions/expense-client"
+mvn clean install
+
+cd "/d/GitRep/SampleProject/Red Hat/@GitRep/DO378-apps/develop-rest/solutions/expense-service"
+mvn clean install
+
+cd "/d/GitRep/SampleProject/Red Hat/@GitRep/DO378-apps/develop-rest/solutions"
+podman images
+podman network create expense-net
+
+podman run --rm --name expense-service -d \
+--network expense-net quay.io/expense-service:1.0.0-SNAPSHOT
+
+podman run --rm --name expense-client -d \
+-e QUARKUS_REST_CLIENT__COM_REDHAT_TRAINING_CLIENT_EXPENSESERVICECLIENT__URL=\
+"http://expense-service:8080" \
+-p 8090:8090 --network expense-net quay.io/expense-client:1.0.0-SNAPSHOT
+
+# 
+# Web ブラウザーで http://localhost:8090 に移動し、expense アプリケーションをテストします。
+# 
+
+【終了方法】
+podman stop -a
+podman network ls
+podman network rm expense-net
+podman network ls

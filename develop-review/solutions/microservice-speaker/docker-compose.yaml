@@ -1,0 +1,26 @@
+# まず、
+# podmanを起動の上、
+# podman-compose up -d
+# でPostgreSQLのコンテナを起動する。
+# 
+# その後に
+# mvn quarkus:dev
+# を実行する。
+# 
+# http://localhost:8080/q/swagger-ui
+# 
+# 終了時は、
+# ・podman-compose downでコンテナを終了する。
+# ・Ctr + c でQuarkusの実行を停止する。
+
+version: '3'
+services:
+  postgres:
+    # image: registry.ocp4.example.com:8443/redhattraining/do378-postgres:14.1
+    image: quay.io/redhattraining/do378-postgres:14.1
+    ports:
+    - "5432:5432"
+    environment:
+      POSTGRES_USER: developer
+      POSTGRES_PASSWORD: developer
+      POSTGRES_DB: testing
