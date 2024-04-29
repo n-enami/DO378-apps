@@ -12,11 +12,11 @@ find /home/student/DO378/DO378-apps -name "pom.xml" \
 # Create a temporal Quarkus app
 TMPDIR=$(mktemp -d)
 cd "$TMPDIR" || exit 1
-quarkus create app tmp
+quarkus create app tmp -x resteasy -P io.quarkus.platform:quarkus-bom:3.8.1
 cd tmp || exit 1
 
 # Populate dependencies for the Maven Quarkus Plugin
-mvn com.redhat.quarkus.platform:quarkus-maven-plugin::go-offline
+mvn io.quarkus.platform:quarkus-maven-plugin::go-offline
 
 # Execute quarkus commands to fetch the dependencies.
 # Some commands might fail, but that's ok as long as dependencies are fetched
@@ -27,13 +27,14 @@ quarkus image build buildpack
 
 cd ..
 mvn \
-com.redhat.quarkus.platform:quarkus-maven-plugin::create \
+io.quarkus.platform:quarkus-maven-plugin:3.8.1:create \
     -DprojectGroupId=com.redhat.training \
     -DprojectArtifactId=tenther \
-    -Dextensions=resteasy
+    -Dextensions=resteasy \
+    -DplatformVersion=3.8.1
 
 cd tenther
-mvn com.redhat.quarkus.platform:quarkus-maven-plugin::go-offline
+mvn io.quarkus.platform:quarkus-maven-plugin::go-offline
 
 # Cleanup Quarkus app and image.
 cd ~ || exit 1
