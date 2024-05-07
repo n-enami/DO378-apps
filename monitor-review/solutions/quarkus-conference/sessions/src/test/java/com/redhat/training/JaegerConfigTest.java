@@ -13,29 +13,24 @@ import static com.redhat.training.ConfigTestUtils.testConfigValueEquals;
 public class JaegerConfigTest {
 
     @Test
-    public void testJaegerServiceName() {
-        String traceName = getConfigProperty( "quarkus.jaeger.service-name" );
-        assertNotNull( traceName, "quarkus.jaeger.service-name must be set" );
+    public void testOtelServiceName() {
+        String traceName = getConfigProperty( "quarkus.otel.service.name" );
+        assertNotNull( traceName, "quarkus.otel.service.name must be set" );
     }
 
     @Test
-    public void testJaegerSamplerType() {
-        testConfigValueEquals( "quarkus.jaeger.sampler-type", "const" );
+    public void testOtelTracesSampler() {
+        testConfigValueEquals( "quarkus.otel.traces.sampler", "traceidratio" );
     }
 
     @Test
-    public void testJaegerSamplerParam() {
-        testConfigValueEquals( "quarkus.jaeger.sampler-param", "1" );
+    public void testOtelTracesSamplerArg() {
+        testConfigValueEquals( "quarkus.otel.traces.sampler.arg", "1" );
     }
 
     @Test
-    public void testJaegerSamplerEndpoint() {
-        testConfigValueEquals( "quarkus.jaeger.endpoint", "http://localhost:14268/api/traces" );
-    }
-
-    @Test
-    public void testJaegerSamplerPropagation() {
-        testConfigValueEquals( "quarkus.jaeger.propagation", "b3" );
+    public void testOtelExporterEndpoint() {
+        testConfigValueEquals( "quarkus.otel.exporter.otlp.traces.endpoint", "http://localhost:4317" );
     }
 
 }
